@@ -32,6 +32,13 @@ def exex_proc(proc_name):
 
    resp = ""
 
+   fn = getattr(__import__(proc_name))
+   resp = fn.handle_request()
+
+   return resp
+      
+
+   
    
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port="80")
+    app.run(host="0.0.0.0", port="80")
