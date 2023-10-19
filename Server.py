@@ -5,6 +5,9 @@ import jwt
 from Scanner import get_headband_sensor_object
 from database import get_instance, get_db
 
+import webbrowser
+import os
+
 
 
 #creates app
@@ -38,7 +41,9 @@ def exex_proc(proc_name):
    return resp
       
 
+webbrowser.open_new_tab('index.html')
    
    
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="80")
+
