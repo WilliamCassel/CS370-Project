@@ -11,10 +11,11 @@ def on_brainbit_signal_received(sensor, data):
     print(data)
 
 
-
+print("Create Headband scanner")
 # Create Scanner
 g_scanner = Scanner([SensorFamily.SensorLEBrainBit])
 g_sensor = None
+print("Sensor found call back")
 def sensorFound(scanner, sensors):
     global g_scanner
     global g_sensor
@@ -26,6 +27,7 @@ def sensorFound(scanner, sensors):
         g_sensor.connect()
         g_sensor.signalDataReceived = on_brainbit_signal_received
         g_scanner.stop()
+        del g_scanner
 
 g_scanner.sensorsChanged = sensorFound
 
@@ -34,7 +36,9 @@ print("Starting scan")
 # Start Search
 g_scanner.start()
 
+
 def get_headband_sensor_object():
+    print("Headband asenor has been found!!")
     return g_sensor
 
 

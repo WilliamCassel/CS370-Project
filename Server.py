@@ -23,16 +23,16 @@ def init_new():
 
 @app.route('/')
 def index():
-   return redirect('cs370homepage.html')
+   return redirect('/static/index.html')
 
 
-@app.route("<proc_name>", methods=['GET', 'POST'])
+@app.route("/open_calls/<proc_name>", methods=['GET', 'POST'])
 def exex_proc(proc_name):
    init_new()
 
    resp = ""
 
-   fn = getattr(__import__(proc_name))
+   fn = getattr(__import__('open_calls.'+proc_name), proc_name)
    resp = fn.handle_request()
 
    return resp
