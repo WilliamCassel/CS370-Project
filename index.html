@@ -130,6 +130,28 @@ body{
 
 <script> 
 
+    function play_start(){
+			$.post("/open_calls/play_movie", { "data":"somedata", "any":"data"},
+				function(data, textStatus) {
+					//this gets called when browser receives response from server
+					console.log(data);
+				}, "json").fail( function(response) {
+					//this gets called if the server throws an error
+					console.log("error");
+				console.log(response);});
+		}
+
+    function play_stopped(){ 
+			$.post("/open_calls/stop_movie", { "data":"somedata", "any":"data"},
+				function(data, textStatus) {
+					//this gets called when browser receives response from server
+					console.log(data);
+				}, "json").fail( function(response) {
+					//this gets called if the server throws an error
+					console.log("error");
+				console.log(response);});
+		}
+  
     var uName = prompt("Please Enter Username: ");
 
     var tag = document.createElement('script');
@@ -155,24 +177,28 @@ body{
         });
       }
 
-      //  The API will call this function when the video player is ready.
-      function onPlayerReady(event) {
-        console.log("test");
-        event.target.playVideo();
-      }
+      
+    function onPlayerReady(event) {
+       // console.log("test");
+       // event.target.playVideo();
+    }
 
-      //  The API calls this function when the player's state changes.
-      var done = false;
-      function onPlayerStateChange(event) {
+      // this function gets called when the player's state changes.
+    var done = false;
+    function onPlayerStateChange(event) {
         //console.log("test");
         if (event.data == YT.PlayerState.PLAYING) {
-          console.log("Played")
+          console.log("Played");
+          play_start();
         }
+        
         else if(event.data==YT.PlayerState.PAUSED){
-          console.log("Paused")
+          console.log("Paused");
+            play_stopped()
         }
         else if(event.data==YT.PlayerState.ENDED){
-          console.log("Ended")
+          console.log("Ended"); //potentially have a third function here called play_ended which will not only stop the headband from scanning but also send the data to the database
+          play_stopped();   //Or leave this as play_stopped and create a different function to send the data to the db which can be activated when the user presses the next video button. Either way should work
           done = true;
         }
       }
@@ -184,15 +210,15 @@ body{
           player.loadVideoByUrl({mediaContentUrl:newVideoURL, startSeconds:0});
       };
 
-      var nextButton = document.getElementById('nextButton');
-      var videoContainer = document.getElementById('player');
+    var nextButton = document.getElementById('nextButton');
+    var videoContainer = document.getElementById('player');
 
-          var videoURLs = [
-              'https://www.youtube.com/embed/cOjhqfld3X8?si=Ht2OJZokMbU_N61M',
-              'https://www.youtube.com/embed/CVdGFrVEl-8?si=u03PC34ivZDIByqz',
-              'https://www.youtube.com/embed/DHxN-QTwQXk?si=ybWA2XO4THUui6QY',
-              'https://www.youtube.com/embed/LCoAXH55sNw?si=Ta39oh_qrVYk_6NT'
-          ];
+    var videoURLs = [
+        'https://www.youtube.com/embed/cOjhqfld3X8?si=Ht2OJZokMbU_N61M',
+         'https://www.youtube.com/embed/CVdGFrVEl-8?si=u03PC34ivZDIByqz',
+        'https://www.youtube.com/embed/DHxN-QTwQXk?si=ybWA2XO4THUui6QY',
+        'https://www.youtube.com/embed/LCoAXH55sNw?si=Ta39oh_qrVYk_6NT'
+     ];
 
           var currentIndex = 0;
           nextButton.addEventListener('click', function () { //make it so that data starts being recorded when the video is played and stops being recored when video is paused. 
