@@ -65,6 +65,24 @@ h1:hover {
     left: 50%; 
     transform: translateX(-50%);
 }
+
+.playB{
+    width:150px; 
+    height:45px; 
+    border-color:#1186bd;
+    border-radius:10%;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
+    background-color:#1186bd; 
+    font-size:20px;
+    font-family: 'Space Mono', monospace; 
+    color:white;
+    position: absolute; 
+    top: 80vh; 
+    left: 50%; 
+    transform: translateX(-50%);
+}
+
+
 .vidPlayer{
     position: absolute;
     top: 45%;
@@ -93,7 +111,8 @@ body{
             <div id="player" class="vidPlayer">
            
             </div>
-            <button id="nextButton" class="nextB">Next Video</button>
+            
+            <button id="playButton" class="playB">Start Video</button>
            
 
            
@@ -129,6 +148,16 @@ body{
             </script>
 
 <script> 
+    //potentially have a third function here called play_ended which will not only stop the headband from scanning but also send the data to the database
+
+    var videoURLs = [
+        'https://www.youtube.com/embed/cOjhqfld3X8?si=Ht2OJZokMbU_N61M',
+         'https://www.youtube.com/embed/CVdGFrVEl-8?si=u03PC34ivZDIByqz',
+        'https://www.youtube.com/embed/DHxN-QTwQXk?si=ybWA2XO4THUui6QY',
+        'https://www.youtube.com/embed/LCoAXH55sNw?si=Ta39oh_qrVYk_6NT'
+     ];
+
+    var currentIndex = 0;
 
     function play_start(){
 			$.post("/open_calls/play_movie", { "data":"somedata", "any":"data"},
@@ -166,9 +195,10 @@ body{
         player = new YT.Player('player', {
         height: '390',
         width: '640',
-        videoId: 'LCoAXH55sNw',
+        videoId: '2ZIpFytCSVc',
         playerVars: {
-        'playsinline': 1
+        'playsinline': 1,
+        controls:0 //THIS ONLY HIDES THE CONTROLS BUT THE USER CAN STILL PAUSE BY CLICKING ON THE VIDEO, MUST USE CSS TO PREVENT THAT
           },
           events: {
             'onReady': onPlayerReady,
@@ -177,61 +207,65 @@ body{
         });
       }
 
-      
+    
     function onPlayerReady(event) {
        // console.log("test");
+       event.target.setOption('controls',0); //same as above, only hides controls but doesnt actually prevent user from controlling the video
        // event.target.playVideo();
     }
-
+    var videoContainer = document.getElementById('player');
       // this function gets called when the player's state changes.
     var done = false;
+
+    var playNewVideo = function (element, newVideoURL) {
+          player.cueVideoByUrl({mediaContentUrl:newVideoURL, startSeconds:0});
+      };
+
     function onPlayerStateChange(event) {
         //console.log("test");
-        if (event.data == YT.PlayerState.PLAYING) {
+        if (event.data == YT.PlayerState.PLAYING) { //once video is playing call play_start
           console.log("Played");
-          play_start();
+          //play_start();
         }
         
-        else if(event.data==YT.PlayerState.PAUSED){
+        else if(event.data==YT.PlayerState.PAUSED){ //removed ability to pause so this can be removed
           console.log("Paused");
             play_stopped()
         }
-        else if(event.data==YT.PlayerState.ENDED){
-          console.log("Ended"); //potentially have a third function here called play_ended which will not only stop the headband from scanning but also send the data to the database
-          play_stopped();   //Or leave this as play_stopped and create a different function to send the data to the db which can be activated when the user presses the next video button. Either way should work
-          done = true;
+        else if(event.data==YT.PlayerState.ENDED){//once video is playing call play_stopped and automatically queue
+          console.log("Ended"); 
+          //play_stopped();   
+          var newVideoURL = videoURLs[currentIndex]; 
+          playNewVideo(videoContainer, newVideoURL);
+          currentIndex = (currentIndex + 1) % videoURLs.length;
         }
       }
+
+
       function stopVideo() {
         player.stopVideo();
       }
-
-      var playNewVideo = function (element, newVideoURL) {
-          player.loadVideoByUrl({mediaContentUrl:newVideoURL, startSeconds:0});
-      };
-
-    var nextButton = document.getElementById('nextButton');
-    var videoContainer = document.getElementById('player');
-
-    var videoURLs = [
-        'https://www.youtube.com/embed/cOjhqfld3X8?si=Ht2OJZokMbU_N61M',
-         'https://www.youtube.com/embed/CVdGFrVEl-8?si=u03PC34ivZDIByqz',
-        'https://www.youtube.com/embed/DHxN-QTwQXk?si=ybWA2XO4THUui6QY',
-        'https://www.youtube.com/embed/LCoAXH55sNw?si=Ta39oh_qrVYk_6NT'
-     ];
-
-          var currentIndex = 0;
-          nextButton.addEventListener('click', function () { //make it so that data starts being recorded when the video is played and stops being recored when video is paused. 
-            console.log("test");            //when video is done playing, stop reciving data from headband and send it to database. Then when the nextButton is clicked repeat the process
-              var newVideoURL = videoURLs[currentIndex]; 
-              currentIndex = (currentIndex + 1) % videoURLs.length;
-              playNewVideo(videoContainer, newVideoURL);
+      playButton = document.getElementById("playButton");
+      playButton.addEventListener('click', function () { 
+           player.playVideo();
+            
           });
 
+ 
+ 
 
+/*
+Probably remove NextVideo button and only have the StartVideo button.
+When a video is finished the headband will stop recieving data and the next video will be automatically queued, no need for user input there
+*/
  
 </script>
-
+<style> 
+    .vidPlayer{ /* This is only way to prevent users from pausing the video afaik */
+        pointer-events: none;
+        position:absolute;
+    }
+</style>
 
     </body>
 </html>
