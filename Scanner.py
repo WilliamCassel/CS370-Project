@@ -38,7 +38,7 @@ g_scanner.start()
 
 
 def get_headband_sensor_object():
-    print("Headband asenor has been found!!")
+    print("Headband asenor has been found")
     return g_sensor
 
 

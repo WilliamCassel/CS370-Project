@@ -3,7 +3,7 @@ from flask_json import FlaskJSON, JsonError, json_response, as_json
 import jwt
 
 from Scanner import get_headband_sensor_object
-from database import get_instance, get_db
+from db_config import get_instance, get_db
 
 import webbrowser
 import os

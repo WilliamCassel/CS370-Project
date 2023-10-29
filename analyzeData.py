@@ -1,3 +1,4 @@
+
 import numpy
 
 def calcEDist(aData, bData):
@@ -9,3 +10,4 @@ def calcEDist(aData, bData):
     distance = numpy.linalg.norm(arrayA - arrayB)
     
     return distance
+
