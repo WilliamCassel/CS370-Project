@@ -2,13 +2,21 @@ from flask import Flask, render_template, request, redirect, url_for, g
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 import jwt
 
-from Scanner import get_headband_sensor_object
+import sys 
+import datetime
+import bcrypt
+import traceback
+
+from tools.eeg import get_headband_sensor_object
+
 from db_config import get_instance, get_db
 
 import webbrowser
 import os
 
+from tools.logging import logger
 
+ERROR_MSG = "Didn't work!"
 
 #creates app
 app = Flask(__name__)
@@ -34,10 +42,16 @@ def exex_proc(proc_name):
    init_new()
 
    resp = ""
-
-   fn = getattr(__import__('open_calls.'+proc_name), proc_name)
-   resp = fn.handle_request()
-
+   try:
+      fn = getattr(__import__('open_calls.'+proc_name), proc_name)
+      resp = fn.handle_request()
+   except Exception as err:
+      ex_data = str(Exception) + '\n'
+      ex_data = ex_data + str(err) + '\n'
+      ex_data = ex_data + traceback.format_exc()
+      logger.error(ex_data)
+      return json_response(status_=500 ,data=ERROR_MSG)
+   
    return resp
       
 

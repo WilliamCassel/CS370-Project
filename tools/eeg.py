@@ -3,25 +3,27 @@ from neurosdk.sensor import Sensor
 from neurosdk.brainbit_sensor import BrainBitSensor, SensorFamily
 from neurosdk.__cmn_types import *
 
+from tools.logging import logger
+
 
 def on_sensor_state_changed(sensor, state):
-    print("Sensor {0} is {1}".format(sensor.Name, state))
+    logger.debug("Sensor {0} is {1}".format(sensor.Name, state))
 
 def on_brainbit_signal_received(sensor, data):
-    print(data)
+    logger.debug(data)
 
 
 print("Create Headband scanner")
 # Create Scanner
 g_scanner = Scanner([SensorFamily.SensorLEBrainBit])
 g_sensor = None
-print("Sensor found call back")
+logger.debug("Sensor found call back")
 def sensorFound(scanner, sensors):
     global g_scanner
     global g_sensor
     for i in range(len(sensors)):
-        print('Sensor %s' % sensors[i])
-        print('connecting to sensor')
+        logger.debug('Sensor %s' % sensors[i])
+        logger.debug('connecting to sensor')
         g_sensor = g_scanner.create_sensor(sensors[i])
         g_sensor.sensorStateChanged = on_sensor_state_changed
         g_sensor.connect()
@@ -32,13 +34,13 @@ def sensorFound(scanner, sensors):
 g_scanner.sensorsChanged = sensorFound
 
 
-print("Starting scan")
+logger.debug("Starting scan")
 # Start Search
 g_scanner.start()
 
 
 def get_headband_sensor_object():
-    print("Headband asenor has been found")
+    #print("Headband asenor has been found")
     return g_sensor
 
 
