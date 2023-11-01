@@ -1,0 +1,109 @@
+<html>
+    <head>
+        <style>
+            
+    body{
+        background-image:url("https://static.vecteezy.com/system/resources/previews/006/852/804/non_2x/abstract-blue-background-simple-design-for-your-website-free-vector.jpg");
+        background-size:cover;
+    }
+
+
+    button{
+        width:150px; 
+        height:45px; 
+        border-color:#12012e;
+        border-radius:10%;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
+        background-color:#12012e; 
+        font-size:20px;
+        font-family: 'Space Mono', monospace; 
+        color:white;
+        position: relative; 
+        top: auto; 
+        left: 50%; 
+        transform: translateX(-50%);
+        margin-bottom:5%;
+    }
+    body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #logForm {
+            width: 80%;
+            max-width: 400px; 
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        div {
+            margin: 10px 0;
+        }
+
+        label {
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #12012e;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form id="signForm" action="/signup" method="post">
+        <div>
+            <label style="color:white" for="username">Username:</label>
+            <input id="uName" type="text" name="username" required>
+        </div>
+        <div>
+            <label style="color:white" for="email">Email:</label>
+            <input id="email" type="text" name="email" required>
+        </div>
+        <div>
+            <label style="color:white" for="password">Password:</label>
+            <input id="pass" type="password"  name="password" required>
+        </div>
+        <div>
+            <label style="color:white" for="confirm password">Confirm Password:</label>
+            <input id="confirmPass" type="password" name="confirmpassword" required>
+        </div>
+        <div>
+            <input type="submit" value="Login">
+        </div>
+    </form>
+</body>
+
+    <script>
+       let form = document.getElementById("signForm");
+       form.addEventListener("submit", function(event){
+            let username = document.getElementById("uName").value;
+            let pass = document.getElementById("pass").value;
+            let confirmPass = document.getElementById("confirmPass").value;
+            let email = document.getElementById("email").value;
+           if(username == "" || pass == "" || confirmPass == "" || email == ""){
+            alert("Please fill out all credentials");
+            event.preventDefault();
+           }
+           if(pass != confirmPass){
+            alert("Passwords do not match!");
+            event.preventDefault();
+           }
+       });
+       
+    </script>
+
+</html>

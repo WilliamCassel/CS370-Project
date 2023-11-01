@@ -1,0 +1,270 @@
+<html>
+    <head>
+
+        <style>
+.center {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.center2 {
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+h1 {
+  width: 60%;
+  font-family: 'Space Mono', monospace;
+  font-size: 45px;
+  color: #977c84;
+  text-align: center;
+  background-color: #12012e;
+  border-radius: clamp(0.25rem, 0.75vw, 1rem);
+  margin-top: 20px; 
+  margin-bottom: 0; 
+  margin-left: auto;
+  margin-right: auto;
+  padding:10px;
+}
+h1:hover {
+  background-color: #12012e;
+  color: #977c84;
+}
+
+.temp{
+    width:40%;
+    font-family: 'Space Mono', monospace;
+    font-size: 30px;
+    color: #960a34;
+    text-align:center;
+    margin-right:20px;
+    border-radius: clamp(0.25rem, 0.75vw, 1rem);
+    background-color: rgb(255, 255, 255);
+    margin-top:0px;
+    margin-bottom:300px;
+    padding:10px;
+}
+
+.nextB{
+    width:150px; 
+    height:45px; 
+    border-color:#12012e;
+    border-radius:10%;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
+    background-color:#12012e; 
+    font-size:20px;
+    font-family: 'Space Mono', monospace; 
+    color:white;
+    position: absolute; 
+    top: 80vh; 
+    left: 50%; 
+    transform: translateX(-50%);
+}
+
+.playB{
+    width:150px; 
+    height:45px; 
+    border-color:#1186bd;
+    border-radius:10%;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
+    background-color:#1186bd; 
+    font-size:20px;
+    font-family: 'Space Mono', monospace; 
+    color:white;
+    position: absolute; 
+    top: 80vh; 
+    left: 50%; 
+    transform: translateX(-50%);
+}
+
+
+.vidPlayer{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    width: 60vw; 
+    height: 60vh;
+
+}
+
+body{
+    background-image:url("https://static.vecteezy.com/system/resources/previews/006/852/804/non_2x/abstract-blue-background-simple-design-for-your-website-free-vector.jpg");
+    background-size:cover;
+}
+
+        </style>
+
+
+
+
+    </head>
+    <body>
+        <div style="left:50%;">
+            <h1 data-value="Brain Dating">Brain Dating</h1>
+            </div>
+            <div id="player" class="vidPlayer">
+           
+            </div>
+            
+            <button id="playButton" class="playB">Start Video</button>
+           
+
+           
+        <script>
+
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let interval = null;
+     
+            document.querySelector("h1").onmouseover = event => {  
+              let iteration = 0;        
+              clearInterval(interval);
+             
+              interval = setInterval(() => {
+                event.target.innerText = event.target.innerText
+                  .split("")
+                  .map((letter, index) => {
+                    if(index < iteration) {
+                      return event.target.dataset.value[index];
+                    }
+                 
+                    return letters[Math.floor(Math.random() * 26)]
+                  })
+                  .join("");
+               
+                if(iteration >= event.target.dataset.value.length){
+                  clearInterval(interval);
+                }
+               
+                iteration += 1 / 3;
+              }, 30);
+            }
+           
+            </script>
+
+<script> 
+    //potentially have a third function here called play_ended which will not only stop the headband from scanning but also send the data to the database
+
+    var videoURLs = [
+        'https://www.youtube.com/embed/cOjhqfld3X8?si=Ht2OJZokMbU_N61M',
+         'https://www.youtube.com/embed/CVdGFrVEl-8?si=u03PC34ivZDIByqz',
+        'https://www.youtube.com/embed/DHxN-QTwQXk?si=ybWA2XO4THUui6QY',
+        'https://www.youtube.com/embed/LCoAXH55sNw?si=Ta39oh_qrVYk_6NT'
+     ];
+
+    var currentIndex = 0;
+
+    function play_start(){
+			$.post("/open_calls/play_movie", { "data":"somedata", "any":"data"},
+				function(data, textStatus) {
+					//this gets called when browser receives response from server
+					console.log(data);
+				}, "json").fail( function(response) {
+					//this gets called if the server throws an error
+					console.log("error");
+				console.log(response);});
+		}
+
+    function play_stopped(){ 
+			$.post("/open_calls/stop_movie", { "data":"somedata", "any":"data"},
+				function(data, textStatus) {
+					//this gets called when browser receives response from server
+					console.log(data);
+				}, "json").fail( function(response) {
+					//this gets called if the server throws an error
+					console.log("error");
+				console.log(response);});
+		}
+  
+
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      //  This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: '2ZIpFytCSVc',
+        playerVars: {
+        'playsinline': 1,
+        controls:0 //THIS ONLY HIDES THE CONTROLS BUT THE USER CAN STILL PAUSE BY CLICKING ON THE VIDEO, MUST USE CSS TO PREVENT THAT
+          },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+    
+    function onPlayerReady(event) {
+       // console.log("test");
+       event.target.setOption('controls',0); //same as above, only hides controls but doesnt actually prevent user from controlling the video
+       // event.target.playVideo();
+    }
+    var videoContainer = document.getElementById('player');
+      // this function gets called when the player's state changes.
+    var done = false;
+
+    var playNewVideo = function (element, newVideoURL) {
+          player.cueVideoByUrl({mediaContentUrl:newVideoURL, startSeconds:0});
+      };
+
+    function onPlayerStateChange(event) {
+        //console.log("test");
+        if (event.data == YT.PlayerState.PLAYING) { //once video is playing call play_start
+          console.log("Played");
+          //play_start();
+        }
+        
+        else if(event.data==YT.PlayerState.PAUSED){ //removed ability to pause so this can be removed
+          console.log("Paused");
+            play_stopped()
+        }
+        else if(event.data==YT.PlayerState.ENDED){//once video is playing call play_stopped and automatically queue
+          console.log("Ended"); 
+          //play_stopped();   
+          var newVideoURL = videoURLs[currentIndex]; 
+          playNewVideo(videoContainer, newVideoURL);
+          currentIndex = (currentIndex + 1) % videoURLs.length;
+        }
+      }
+
+
+      function stopVideo() {
+        player.stopVideo();
+      }
+      playButton = document.getElementById("playButton");
+      playButton.addEventListener('click', function () { 
+           player.playVideo();
+            
+          });
+
+ 
+ 
+
+/*
+Probably remove NextVideo button and only have the StartVideo button.
+When a video is finished the headband will stop recieving data and the next video will be automatically queued, no need for user input there
+*/
+ 
+</script>
+<style> 
+    .vidPlayer{ /* This is only way to prevent users from pausing the video afaik */
+        pointer-events: none;
+        position:absolute;
+    }
+</style>
+
+    </body>
+</html>
