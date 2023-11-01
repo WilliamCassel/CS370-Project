@@ -57,7 +57,10 @@ def signup():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        cur.execute('INSERT INTO users (username, email, password) VALUES (%s, %s, %s);', (username, email, password))
+        #cur.execute('INSERT INTO users (username, email, password) VALUES (?, ?, ?);', (username, email, password))
+        command = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
+        values = (username, email, password)
+        cur.execute(command, values)
         db.commit()
         db.close()
         flash("Registration successful")
@@ -143,5 +146,4 @@ def exec_proc(proc_name):
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
     db, cur = get_db_instance()
-    cur.execute("create table users ( username varchar(50), email varchar(50), password varchar(50) );")
-    db.commit()
+    
