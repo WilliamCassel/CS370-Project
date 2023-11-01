@@ -142,3 +142,6 @@ def exec_proc(proc_name):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
+    db, cur = get_db_instance()
+    cur.execute("create table users ( username varchar(50), email varchar(50), password varchar(50) );")
+    db.commit()
