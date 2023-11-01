@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request, redirect, url_for, g, session
+from flask import Flask,render_template,request, redirect, url_for, g, session, flash
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 from flask_session import Session
 import jwt
