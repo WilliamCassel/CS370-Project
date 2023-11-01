@@ -57,7 +57,7 @@ def signup():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        cur.execute('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', (username, email, password))
+        cur.execute('INSERT INTO users (username, email, password) VALUES (%s, %s, %s);', (username, email, password))
         db.commit()
         db.close()
         flash("Registration successful")
