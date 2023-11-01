@@ -46,7 +46,7 @@ def init_new_env():
 #So.. we redirect to the endpoint we want to load the base page
 @app.route('/') #endpoint
 def index():
-    return redirect('/static/index.html')
+    return redirect('/static/index_updated.html')
 
 #https://www.geeksforgeeks.org/how-to-use-flask-session-in-python-flask/ this as reference
 

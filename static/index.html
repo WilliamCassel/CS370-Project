@@ -161,7 +161,7 @@ body{
     var currentIndex = 0;
 
     function play_start(){
-			$.post("/open_calls/play_movie", { "data":"somedata", "any":"data"},
+			$.post("/open_api/play_movie", { "data":"somedata", "any":"data"},
 				function(data, textStatus) {
 
 					//this gets called when browser receives response from server
