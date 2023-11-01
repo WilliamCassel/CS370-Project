@@ -11,7 +11,7 @@ import traceback
 from tools.eeg import get_headband_sensor_object
 
 
-from db_con import get_instance, get_db
+from db_con import get_db_instance, get_db
 
 #from tools.token_required import token_required
 
