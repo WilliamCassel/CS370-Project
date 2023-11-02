@@ -2,7 +2,6 @@ from flask import Flask,render_template,request, redirect, url_for, g, session, 
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 from flask_session import Session
 import jwt
-
 import sys
 import datetime
 import bcrypt
@@ -25,16 +24,20 @@ ERROR_MSG = "Ooops.. Didn't work!"
 
 #Create our app
 app = Flask(__name__)
-app.secret_key = 'secret_key'
-Session(app)
+
+#Session(app)
 #add in flask json
+app.secret_key = 'secret_key'
+app.config['SESSION_TYPE'] = 'filesystem'
 FlaskJSON(app)
 
+Session(app) 
 #g is flask for a global var storage 
 def init_new_env():
     #To connect to DB
     if 'db' not in g:
         g.db = get_db()
+
 
     if 'hb' not in g:
         g.hb = get_headband_sensor_object()
@@ -58,7 +61,8 @@ def signup():
         password = request.form.get('password')
 
         #cur.execute('INSERT INTO users (username, email, password) VALUES (?, ?, ?);', (username, email, password))
-        command = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
+        #command = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
+        command = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
         values = (username, email, password)
         cur.execute(command, values)
         db.commit()
@@ -76,7 +80,7 @@ def landing_page():
         flash("NOT LOGGED IN!")
         return render_template('login.html')
     
-    return render_template('/static/landingPage.html')
+    return redirect('/static/landingPage.html')
 
 
 @app.route('/login', methods=['POST'])
@@ -93,7 +97,7 @@ def login():
         return redirect('/landingPage') 
     
     flash("Invalid login credentials")
-    return render_template('/static/login.html')
+    return redirect('/static/login.html')
 
 
 
