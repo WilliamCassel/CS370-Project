@@ -59,11 +59,12 @@ def signup():
         username = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
+        hb_data = ""
 
         #cur.execute('INSERT INTO users (username, email, password) VALUES (?, ?, ?);', (username, email, password))
         #command = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
-        command = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
-        values = (username, email, password)
+        command = "INSERT INTO users (username, email, password, hb_data) VALUES (?, ?, ?, ?)"
+        values = (username, email, password, hb_data)
         cur.execute(command, values)
         db.commit()
         db.close()
