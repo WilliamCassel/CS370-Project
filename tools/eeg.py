@@ -20,7 +20,7 @@ def on_brainbit_signal_received(sensor, data):
     #db.close()
 
 
-print("Create Headband scanner")
+logger.debug("Create Headband scanner")
 # Create Scanner
 g_scanner = Scanner([SensorFamily.SensorLEBrainBit])
 g_sensor = None
