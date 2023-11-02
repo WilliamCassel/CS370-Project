@@ -76,9 +76,9 @@ def signup():
 
 @app.route('/landingPage')
 def landing_page():
-    if not session.get('logged_in'):
+    if session['logged_in'] == False:
         flash("NOT LOGGED IN!")
-        return render_template('login.html')
+        return redirect('/static/login.html')
     
     return redirect('/static/landingPage.html')
 
@@ -103,7 +103,7 @@ def login():
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session['logged_in'] = False
-    session['name'] = ""
+    session['name'] = None
     return redirect('/')
 
 

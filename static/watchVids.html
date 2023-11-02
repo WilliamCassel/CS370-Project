@@ -50,18 +50,18 @@ h1:hover {
     padding:10px;
 }
 
-.nextB{
+.backB{
     width:150px; 
     height:45px; 
-    border-color:#12012e;
+    border-color:#1186bd;
     border-radius:10%;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
-    background-color:#12012e; 
+    background-color:#1186bd; 
     font-size:20px;
     font-family: 'Space Mono', monospace; 
     color:white;
     position: absolute; 
-    top: 80vh; 
+    top:90vh;
     left: 50%; 
     transform: translateX(-50%);
 }
@@ -112,10 +112,10 @@ body{
             <div id="player" class="vidPlayer">
            
             </div>
-            
-            <button id="playButton" class="playB">Start Video</button>
-           
-
+            <div>
+            <button id="playButton" class="playB">Start Video</button><br>
+            <button class="backB">Back</button>
+</div>
            
         <script>
 
@@ -235,7 +235,7 @@ body{
         }
         else if(event.data==YT.PlayerState.ENDED){//once video is playing call play_stopped and automatically queue
           console.log("Ended"); 
-          //play_stopped();   
+          play_stopped();   
           var newVideoURL = videoURLs[currentIndex]; 
           playNewVideo(videoContainer, newVideoURL);
           currentIndex = (currentIndex + 1) % videoURLs.length;
@@ -252,13 +252,11 @@ body{
             
           });
 
+          let back = document.getElementsByTagName("button")[1];
+       back.addEventListener("click", function(){
+            window.location.href="landingPage.html";
+       });
  
- 
-
-/*
-Probably remove NextVideo button and only have the StartVideo button.
-When a video is finished the headband will stop recieving data and the next video will be automatically queued, no need for user input there
-*/
  
 </script>
 <style> 

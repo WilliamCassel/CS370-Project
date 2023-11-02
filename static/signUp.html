@@ -1,26 +1,28 @@
 <html>
     <head>
         <style>
-            
+           
     body{
         background-image:url("https://static.vecteezy.com/system/resources/previews/006/852/804/non_2x/abstract-blue-background-simple-design-for-your-website-free-vector.jpg");
         background-size:cover;
     }
 
-
+    .container {
+            text-align: center;
+        }
     button{
-        width:150px; 
-        height:45px; 
-        border-color:#12012e;
+        width:150px;
+        height:45px;
+        border-color:#1186bd;
         border-radius:10%;
-        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
-        background-color:#12012e; 
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        background-color:#1186bd;
         font-size:20px;
-        font-family: 'Space Mono', monospace; 
+        font-family: 'Space Mono', monospace;
         color:white;
-        position: relative; 
-        top: auto; 
-        left: 50%; 
+        position: relative;
+        top: auto;
+        left: 50%;
         transform: translateX(-50%);
         margin-bottom:5%;
     }
@@ -32,9 +34,9 @@
             margin: 0;
         }
 
-        #logForm {
+        #signForm {
             width: 80%;
-            max-width: 400px; 
+            max-width: 400px;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -57,13 +59,14 @@
         }
 
         input[type="submit"] {
-            background-color: #12012e;
+            background-color: #1186bd;
             color: #fff;
             cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <div class="container">
     <form id="signForm" action="/signup" method="post">
         <div>
             <label style="color:white" for="username">Username:</label>
@@ -81,10 +84,12 @@
             <label style="color:white" for="confirm password">Confirm Password:</label>
             <input id="confirmPass" type="password" name="confirmpassword" required>
         </div>
-        <div>
-            <input type="submit" value="Login">
+        <div style="text-align: center; display: block;">
+            <input type="submit" value="Sign Up">
         </div>
     </form>
+    <button style="display:block; text-align: center;">Back</button>
+</div>
 </body>
 
     <script>
@@ -104,6 +109,10 @@
            }
        });
        
+       let back = document.getElementsByTagName("button")[0];
+       back.addEventListener("click", function(){
+            window.location.href="index_updated.html";
+       });
     </script>
 
 </html>

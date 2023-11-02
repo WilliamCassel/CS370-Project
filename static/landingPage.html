@@ -27,8 +27,8 @@ button{
         </style>
         </head>
         <body>
-           
-            <button style="margin-top:15%;" id="watchButton">Watch Videos</button><br>
+
+            <button style="margin-top:15%; font-size: 15px;" id="watchButton">Watch Videos</button><br>
             <button id="resultsButton"> Reults</button> <br>
             <form method="post">
             <button id="Logout" formaction="/logout"> Logout</button>
@@ -37,7 +37,7 @@ button{
     </body>
 
     <script>
-       
+
         var watButton = document.getElementById("watchButton");
         watButton.addEventListener("click", function() {
             window.location.href = "watchVids.html";

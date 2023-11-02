@@ -11,10 +11,10 @@
     button{
         width:150px; 
         height:45px; 
-        border-color:#12012e;
+        border-color:#1186bd;
         border-radius:10%;
         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
-        background-color:#12012e; 
+        background-color:#1186bd; 
         font-size:20px;
         font-family: 'Space Mono', monospace; 
         color:white;
@@ -57,13 +57,17 @@
         }
 
         input[type="submit"] {
-            background-color: #12012e;
+            background-color: #1186bd;
             color: #fff;
             cursor: pointer;
+        }
+        .container {
+            text-align: center;
         }
     </style>
 </head>
 <body>
+    <div class="container">
     <form id="logForm" action="/login" method="post">
         <div>
             <label style="color:white" for="username">Username:</label>
@@ -77,6 +81,8 @@
             <input type="submit" value="Login">
         </div>
     </form>
+    <button style="display:block; text-align: center;">Back</button>
+</div>
 </body>
 
     <script>
@@ -96,6 +102,10 @@
            // window.location.href = "landingPage.html";
        });
        
+       let back = document.getElementsByTagName("button")[0];
+       back.addEventListener("click", function(){
+            window.location.href="index_updated.html";
+       });
     </script>
 
 </html>
