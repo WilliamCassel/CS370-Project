@@ -105,6 +105,7 @@ body{
 
     </head>
     <body>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" crossorigin="anonymous"></script>
         <div style="left:50%;">
             <h1 data-value="Brain Dating">Brain Dating</h1>
             </div>
@@ -160,8 +161,9 @@ body{
     var currentIndex = 0;
 
     function play_start(){
-			$.post("/open_calls/play_movie", { "data":"somedata", "any":"data"},
+			$.post("/open_api/play_movie", { "data":"somedata", "any":"data"},
 				function(data, textStatus) {
+
 					//this gets called when browser receives response from server
 					console.log(data);
 				}, "json").fail( function(response) {
@@ -224,7 +226,7 @@ body{
         //console.log("test");
         if (event.data == YT.PlayerState.PLAYING) { //once video is playing call play_start
           console.log("Played");
-          //play_start();
+          play_start();
         }
         
         else if(event.data==YT.PlayerState.PAUSED){ //removed ability to pause so this can be removed

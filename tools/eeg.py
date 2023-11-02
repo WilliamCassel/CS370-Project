@@ -4,6 +4,7 @@ from neurosdk.brainbit_sensor import BrainBitSensor, SensorFamily
 from neurosdk.__cmn_types import *
 
 from tools.logging import logger
+from db_con import get_db_instance, get_db
 
 
 def on_sensor_state_changed(sensor, state):
@@ -11,6 +12,12 @@ def on_sensor_state_changed(sensor, state):
 
 def on_brainbit_signal_received(sensor, data):
     logger.debug(data)
+    #db, cur = get_db_instance()
+    #command = ("INSERT INTO USERS (data) VALUES (?)")
+    #value = (data)
+    #cur.execute(command, value)
+    #db.commit()
+    #db.close()
 
 
 print("Create Headband scanner")

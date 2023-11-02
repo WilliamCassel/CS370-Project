@@ -13,9 +13,5 @@ def get_db_instance():
 if __name__ == '__main__':
     db, cur = get_db_instance()
 
-    #cur.execute("select * from users")
-    for r in cur.fetchall():
-        print(r)
-
     cur.execute("create table users ( username varchar(50), email varchar(50), password varchar(50) );")
     db.commit()
