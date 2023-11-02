@@ -100,6 +100,12 @@ def login():
     return redirect('/static/login.html')
 
 
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session['logged_in'] = False
+    session['name'] = ""
+    return redirect('/')
+
 
 @app.route("/secure_api/<proc_name>",methods=['GET', 'POST'])
 #@token_required
