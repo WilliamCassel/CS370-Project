@@ -29,7 +29,9 @@ button{
         <body>
 
             <button style="margin-top:15%; font-size: 15px;" id="watchButton">Watch Videos</button><br>
-            <button id="resultsButton"> Reults</button> <br>
+            <form method="post">
+            <button id="resultsButton" formaction="/matches"> Reults</button>
+        </form> <br>
             <form method="post">
             <button id="Logout" formaction="/logout"> Logout</button>
         </form>

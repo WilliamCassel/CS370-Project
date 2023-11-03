@@ -48,8 +48,13 @@ h1:hover {
           <div style="left:50%;">
           <h1 data-value="Brain Dating">Brain Dating</h1>
           </div>
-            <button style="margin-top:15%;" id="logButton">Login</button> <br>
-            <button id="signButton">Sign Up</button><br>
+          <form method="post">
+            <button style="margin-top:15%;" id="logButton" formaction="/login">Login</button>
+           </form><br>
+
+           <form method="post">
+            <button id="signButton" formaction="/signUp">Sign Up</button><br>
+            </form> 
     </body>
 
     <script>

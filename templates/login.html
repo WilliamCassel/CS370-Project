@@ -1,0 +1,113 @@
+<html>
+    <head>
+        <style>
+            
+    body{
+        background-image:url("https://static.vecteezy.com/system/resources/previews/006/852/804/non_2x/abstract-blue-background-simple-design-for-your-website-free-vector.jpg");
+        background-size:cover;
+    }
+
+
+    button{
+        width:150px; 
+        height:45px; 
+        border-color:#1186bd;
+        border-radius:10%;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
+        background-color:#1186bd; 
+        font-size:20px;
+        font-family: 'Space Mono', monospace; 
+        color:white;
+        position: relative; 
+        top: auto; 
+        left: 50%; 
+        transform: translateX(-50%);
+        margin-bottom:5%;
+    }
+    body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #logForm {
+            width: 80%;
+            max-width: 400px; 
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        div {
+            margin: 10px 0;
+        }
+
+        label {
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #1186bd;
+            color: #fff;
+            cursor: pointer;
+        }
+        .container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <form id="logForm" action="/loggedIn" method="post">
+        <div>
+            <label style="color:white" for="username">Username:</label>
+            <input id="uName" type="text" name="username" required>
+        </div>
+        <div>
+            <label style="color:white" for="password">Password:</label>
+            <input id="pass" type="password" name="password" required>
+        </div>
+        <div>
+            <input type="submit" value="Login">
+        </div>
+    </form>
+    <form method="get">
+    <button style="display:block; text-align: center;" formaction="/">Back</button>
+    </form>
+</div>
+</body>
+
+    <script>
+       let form = document.getElementById("logForm");
+       form.addEventListener("submit", function(event){
+            let username = document.getElementById("uName").value;
+           let pass = document.getElementById("pass").value;
+
+            if(username == ""){
+                alert("enter a username")
+                event.preventDeafult;
+            }
+            if(pass == ""){
+                alert("enter a password")
+                event.preventDefault;
+            }
+           // window.location.href = "landingPage.html";
+       });
+       
+       let back = document.getElementsByTagName("button")[0];
+       back.addEventListener("click", function(){
+            window.location.href="index_updated.html";
+       });
+    </script>
+
+</html>

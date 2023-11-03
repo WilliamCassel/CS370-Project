@@ -7,7 +7,7 @@ import datetime
 import bcrypt
 import traceback
 
-from tools.eeg import get_headband_sensor_object
+#from tools.eeg import get_headband_sensor_object
 
 
 from db_con import get_db_instance, get_db
@@ -24,7 +24,7 @@ ERROR_MSG = "Ooops.. Didn't work!"
 
 #Create our app
 app = Flask(__name__)
-
+app.static_folder = '/templates'
 #Session(app)
 #add in flask json
 app.secret_key = 'secret_key'
@@ -39,8 +39,8 @@ def init_new_env():
         g.db = get_db()
 
 
-    if 'hb' not in g:
-        g.hb = get_headband_sensor_object()
+    #if 'hb' not in g:
+      #  g.hb = get_headband_sensor_object()
 
     #g.secrets = get_secrets()
     #g.sms_client = get_sms_client()
@@ -49,12 +49,12 @@ def init_new_env():
 #So.. we redirect to the endpoint we want to load the base page
 @app.route('/') #endpoint
 def index():
-    return redirect('/static/index_updated.html')
+    return render_template('/index_updated.html')
 
 #https://www.geeksforgeeks.org/how-to-use-flask-session-in-python-flask/ this as reference
 
-@app.route('/signup', methods=['POST'])
-def signup():
+@app.route('/signedUp', methods=['POST'])
+def signedUp():
         db, cur = get_db_instance()
         username = request.form.get('username')
         email = request.form.get('email')
@@ -70,8 +70,14 @@ def signup():
         flash("Registration successful")
         session['logged_in'] = True  # Store a session variable to indicate the user is logged in
         session['name'] = username
-        return redirect('/landingPage')
+        return render_template('landingPage.html')
   
+
+@app.route('/signUp', methods=['POST'])
+def signup():
+        return render_template('signUp.html')
+
+
 
 
 @app.route('/landingPage')
@@ -80,11 +86,32 @@ def landing_page():
         flash("NOT LOGGED IN!")
         return redirect('/static/login.html')
     
-    return redirect('/static/landingPage.html')
+    #return redirect('/static/landingPage.html')
+    return render_template('landingPage.html')
 
 
-@app.route('/login', methods=['POST'])
-def login():
+@app.route('/matches', methods=['POST'])
+def matches():
+    if session['logged_in'] == False:
+        flash("NOT LOGGED IN!")
+        return redirect('/static/login.html')
+    
+    #return redirect('/static/landingPage.html')
+    return render_template('matches.html')
+
+
+@app.route('/watchVids', methods=['POST'])
+def watchVids():
+    if session['logged_in'] == False:
+        flash("NOT LOGGED IN!")
+        return render_template('/login.html')
+    
+    return render_template('watchVids.html')
+    #return redirect('/static/landingPage.html')
+
+
+@app.route('/loggedIn', methods=['POST'])
+def loggedIn():
     db, cur = get_db_instance()
     username = request.form.get('username')
     password = request.form.get('password')
@@ -97,14 +124,20 @@ def login():
         return redirect('/landingPage') 
     
     flash("Invalid login credentials")
-    return redirect('/static/login.html')
+    return render_template('/login.html')
 
 
-@app.route('/logout', methods=['GET', 'POST'])
+@app.route('/login', methods = ['POST'])
+def login():
+    return render_template('login.html')
+
+
+
+@app.route('/logout', methods=['POST'])
 def logout():
     session['logged_in'] = False
     session['name'] = None
-    return redirect('/')
+    return render_template('index_updated.html')
 
 
 @app.route("/secure_api/<proc_name>",methods=['GET', 'POST'])
