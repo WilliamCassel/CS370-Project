@@ -8,7 +8,9 @@ from tools.logging import logger
 from db_con import get_db_instance, get_db
 import pickle
 from flask import Flask,render_template,request, redirect, url_for, g, session, flash
+import csv
 
+csv_file_name = "eeg_data.csv"
 hb_data = []
 
 
@@ -19,6 +21,15 @@ def on_brainbit_signal_received(sensor, data):
     global hb_data
     logger.debug(data)
     hb_data.append(data)
+
+    #Send the incoming data to a csv file
+    with open(csv_file_name, mode='a', newline='') as csv_file:
+        fieldnames = ['Timestamp', 'SignalData']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        if not csv_file.tell():
+            writer.writeheader()
+
+        writer.writerow({'TimeStamp': data.Timestamp, 'SignalData': data.Data})
     
 
 
