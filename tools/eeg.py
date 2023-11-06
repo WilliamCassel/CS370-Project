@@ -2,22 +2,25 @@ from neurosdk.scanner import Scanner
 from neurosdk.sensor import Sensor
 from neurosdk.brainbit_sensor import BrainBitSensor, SensorFamily
 from neurosdk.__cmn_types import *
+from neurosdk.cmn_types import BrainBitSignalData
 
 from tools.logging import logger
 from db_con import get_db_instance, get_db
+import pickle
+from flask import Flask,render_template,request, redirect, url_for, g, session, flash
+
+hb_data = []
 
 
 def on_sensor_state_changed(sensor, state):
     logger.debug("Sensor {0} is {1}".format(sensor.Name, state))
 
 def on_brainbit_signal_received(sensor, data):
+    global hb_data
     logger.debug(data)
-    #db, cur = get_db_instance()
-    #command = ("INSERT INTO USERS (data) VALUES (?)")
-    #value = (data)
-    #cur.execute(command, value)
-    #db.commit()
-    #db.close()
+    hb_data.append(data)
+    
+
 
 
 logger.debug("Create Headband scanner")
@@ -49,6 +52,3 @@ g_scanner.start()
 def get_headband_sensor_object():
     #print("Headband asenor has been found")
     return g_sensor
-
-
-
