@@ -6,11 +6,13 @@ import sys
 import datetime
 import bcrypt
 import traceback
+import pickle
 
 from tools.eeg import get_headband_sensor_object
 
 
 from db_con import get_db_instance, get_db
+
 
 #from tools.token_required import token_required
 
@@ -59,11 +61,12 @@ def signedUp():
         username = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
+        hb_data = ""
 
         #cur.execute('INSERT INTO users (username, email, password) VALUES (?, ?, ?);', (username, email, password))
         #command = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
-        command = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
-        values = (username, email, password)
+        command = "INSERT INTO users (username, email, password, hb_data) VALUES (?, ?, ?, ?)"
+        values = (username, email, password, hb_data)
         cur.execute(command, values)
         db.commit()
         db.close()
@@ -139,6 +142,19 @@ def logout():
     session['name'] = None
     return render_template('index_updated.html')
 
+def update_db():
+    with open("hb_data.pickle", "rb") as file:
+         
+        loaded_data = pickle.load(file)
+        db, cur = get_db_instance()
+        username = request.form.get('username')
+        session['name'] = username
+        command = "UPDATE users SET hb_data = ? WHERE username = ?"
+        value = (loaded_data, session['name'])
+        cur.execute(command, value)
+        db.commit()
+        db.close()
+
 
 @app.route("/secure_api/<proc_name>",methods=['GET', 'POST'])
 #@token_required
@@ -161,7 +177,6 @@ def exec_secure_proc(proc_name):
         return json_response(status_=500 ,data=ERROR_MSG)
 
     return resp
-
 
 
 @app.route("/open_api/<proc_name>",methods=['GET', 'POST'])
