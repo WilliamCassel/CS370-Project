@@ -2,7 +2,7 @@ import sqlite3
 
 
 def get_db():
-    return sqlite3.connect("database.db")
+    #return sqlite3.connect("database.db")
     return sqlite3.connect("db.sqlite")
 
 def get_db_instance():
