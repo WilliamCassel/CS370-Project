@@ -149,7 +149,7 @@ button:hover{
 		}
 
     function play_stopped(){ 
-			$.post("/open_calls/stop_movie", { "data":"somedata", "any":"data"},
+			$.post("/open_api/stop_movie", { "data":"somedata", "any":"data"},
 				function(data, textStatus) {
 					//this gets called when browser receives response from server
 					console.log(data);
