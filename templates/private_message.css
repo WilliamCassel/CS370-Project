@@ -1,0 +1,44 @@
+<html>
+    <head>
+<style>
+body{
+    background-image:url("https://static.vecteezy.com/system/resources/previews/006/852/804/non_2x/abstract-blue-background-simple-design-for-your-website-free-vector.jpg");
+    background-size:cover;
+}
+.center {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  
+  .center2 {
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  h1 {
+    width: 60%;
+    font-family: 'Space Mono', monospace;
+    font-size: 45px;
+    color: #977c84;
+    text-align: center;
+    background-color: #12012e;
+    border-radius: clamp(0.25rem, 0.75vw, 1rem);
+    margin-top: 20px; 
+    margin-bottom: 0; 
+    margin-left: auto;
+    margin-right: auto;
+    padding:10px;
+  }
+  h1:hover {
+    background-color: #12012e;
+    color: #977c84;
+  }
+  </style>
+
+  </head>
+  </html>

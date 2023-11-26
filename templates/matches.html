@@ -54,8 +54,14 @@ button:hover{
         <body>
             <h1> Matches for {{session.name}}</h1>
             <form method="get">
-                <button style="display:block; text-align: center; margin-top:15%" formaction="/landingPage">Back</button>
+                <button style="display:block; text-align: center; margin-top:15%;" formaction="/landingPage">Back</button>
                 </form>
+            {% for u in users %}
+            <form method="POST">
+                <button formaction="/private_messages/{{session.name}}/{{u[0]}}" type="submit" name="user_id" value="{{ u[0] }}" class="user-button">DM {{ u[0] }}</button>
+            </form>
+             {% endfor %}
+          
     </body>
 
     <script>

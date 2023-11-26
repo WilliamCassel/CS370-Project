@@ -83,7 +83,7 @@ def signup():
 
 
 
-@app.route('/landingPage')
+@app.route('/landingPage', methods=['POST', 'GET'])
 def landing_page():
     if session['logged_in'] == False:
         flash("NOT LOGGED IN!")
@@ -93,14 +93,18 @@ def landing_page():
     return render_template('landingPage.html')
 
 
-@app.route('/matches', methods=['POST'])
+@app.route('/matches', methods=['POST', 'GET'])
 def matches():
     if session['logged_in'] == False:
         flash("NOT LOGGED IN!")
         return redirect('/static/login.html')
-    
+    #ADD MATCH SESSION TOKENS HERE
     #return redirect('/static/landingPage.html')
-    return render_template('matches.html')
+    db, cur = get_db_instance()
+    cur.execute("SELECT username, email FROM users;") 
+    users= cur.fetchall()
+    #session['match'] = "" #Placeholder
+    return render_template('matches.html', users = users)
 
 
 @app.route('/watchVids', methods=['POST'])
@@ -118,7 +122,7 @@ def loggedIn():
     db, cur = get_db_instance()
     username = request.form.get('username')
     password = request.form.get('password')
-
+   
     cur.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password)) #check if username and passwords match
     user_data = cur.fetchone()
     if user_data is not None:
@@ -154,6 +158,32 @@ def update_db():
         cur.execute(command, value)
         db.commit()
         db.close()
+
+
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    sender_username = request.form['sender']
+    receiver_username = request.form['receiver']
+    message = request.form['message']
+    db, cur = get_db_instance()
+    
+    cur.execute('INSERT INTO messages (sender_id, receiver_id, message) VALUES (?, ?, ?)',(sender_username, receiver_username, message))
+    db.commit()
+    db.close()
+
+    return redirect(url_for('private_messages', sender=sender_username, receiver=receiver_username, action='post'))
+
+
+@app.route('/private_messages/<sender>/<receiver>', methods=['POST', 'GET'])
+def private_messages(sender, receiver):
+    db, cur = get_db_instance()
+
+    cur.execute('SELECT * FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)',(sender, receiver, receiver, sender))
+    messages = cur.fetchall()
+    db.close()
+
+    return render_template('private_message.html', sender=sender, receiver=receiver, messages=messages)
+
 
 
 @app.route("/secure_api/<proc_name>",methods=['GET', 'POST'])
