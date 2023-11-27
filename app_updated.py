@@ -62,21 +62,25 @@ def signedUp():
         email = request.form.get('email')
         password = request.form.get('password')
         hb_data = ""
-
         #cur.execute('INSERT INTO users (username, email, password) VALUES (?, ?, ?);', (username, email, password))
         #command = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
-        command = "INSERT INTO users (username, email, password, hb_data) VALUES (?, ?, ?, ?)"
-        values = (username, email, password, hb_data)
-        cur.execute(command, values)
-        db.commit()
-        db.close()
-        flash("Registration successful")
-        session['logged_in'] = True  # Store a session variable to indicate the user is logged in
-        session['name'] = username
-        return render_template('landingPage.html')
+        cur.execute("SELECT * FROM users WHERE username = ?", (username,))
+        email_check = cur.fetchone()
+        if email_check is None:
+            command = "INSERT INTO users (username, email, password, hb_data) VALUES (?, ?, ?, ?)"
+            values = (username, email, password, hb_data)
+            cur.execute(command, values)
+            db.commit()
+            db.close()
+            flash("Registration successful")
+            session['logged_in'] = True  # Store a session variable to indicate the user is logged in
+            session['name'] = username
+            return render_template('landingPage.html')
+        flash("Account already exists!")
+        return redirect("/signUp")
   
 
-@app.route('/signUp', methods=['POST'])
+@app.route('/signUp', methods=['POST', 'GET'])
 def signup():
         return render_template('signUp.html')
 
@@ -122,7 +126,8 @@ def loggedIn():
     db, cur = get_db_instance()
     username = request.form.get('username')
     password = request.form.get('password')
-   
+    cur.execute("DROP TABLE friendslist")
+    cur.execute("CREATE TABLE friendslist(user TEXT, friend TEXT, PRIMARY KEY (user, friend), FOREIGN KEY(user) REFERENCES users(user), FOREIGN KEY(friend) REFERENCES users(user))")
     cur.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password)) #check if username and passwords match
     user_data = cur.fetchone()
     if user_data is not None:
@@ -137,6 +142,31 @@ def loggedIn():
 @app.route('/login', methods = ['POST'])
 def login():
     return render_template('login.html')
+
+
+
+@app.route('/add_friend/<user>/<friend>', methods=['POST'])
+def add_friend(user, friend):
+    db, cur = get_db_instance()
+    cur.execute('SELECT user FROM friendslist WHERE user = ? and friend = ?', (user, friend))
+    friendcheck = cur.fetchone()
+    if friendcheck is None:
+        cur.execute('INSERT INTO friendslist (user, friend) VALUES (?, ?)', (user, friend))
+        db.commit()
+    cur.execute('SELECT * FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)',(user, friend, friend, user))
+    messages = cur.fetchall()
+    db.close()
+    return render_template('private_message.html', sender=user, receiver=friend, messages=messages) 
+
+
+@app.route('/friends/<user>', methods=['POST'])
+def display_friends(user):
+    db, cur = get_db_instance()
+    cur.execute('SELECT * FROM friendslist WHERE user = ?', (user))
+    friends = cur.fetchall()
+    db.close()
+
+    return render_template('friends_list.html', friends=friends)
 
 
 

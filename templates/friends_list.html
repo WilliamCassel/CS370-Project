@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <style>
+            
+body{
+    background-image:url("https://static.vecteezy.com/system/resources/previews/006/852/804/non_2x/abstract-blue-background-simple-design-for-your-website-free-vector.jpg");
+    background-size:cover;
+}
+
+
+button{
+    width:150px; 
+    height:45px; 
+    border-color:#1186bd;
+    border-radius:10%;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
+    background-color:#1186bd; 
+    font-size:20px;
+    font-family: 'Space Mono', monospace; 
+    color:white;
+    position: relative; 
+    top: auto; 
+    left: 50%; 
+    transform: translateX(-50%);
+    margin-bottom:5%;
+}
+button:hover{
+            background-color:#053e58
+        }
+        
+        </style>
+        </head>
+        <body>
+            <h1>Friends List</h1>
+            <ul>
+                {% for friend in friends %}
+                    <li>{{ friend[1]}}</li>
+                {% endfor %}
+            </ul>
+            <form  method="post">
+               
+                <button style="display:block; text-align: center;" formaction="/matches">Back</button></div>
+            </form>
+
+        </body>
+
+    
+
+
+
+</html>
