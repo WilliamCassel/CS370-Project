@@ -8,7 +8,7 @@ body{
 }
 
 
-button{
+.centerButton{
     width:150px; 
     height:45px; 
     border-color:#1186bd;
@@ -24,23 +24,55 @@ button{
     transform: translateX(-50%);
     margin-bottom:5%;
 }
+button{
+    width:150px; 
+    height:45px; 
+    border-color:#1186bd;
+    border-radius:10%;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
+    background-color:#1186bd; 
+    font-size:20px;
+    font-family: 'Space Mono', monospace; 
+    color:white;
+    margin-bottom:5%;
+}
 button:hover{
             background-color:#053e58
         }
+        h1 {
+  width: 60%;
+  font-family: 'Space Mono', monospace;
+  font-size: 45px;
+  color: #977c84;
+  text-align: center;
+  background-color: #12012e;
+  border-radius: clamp(0.25rem, 0.75vw, 1rem);
+  margin-top: 20px; 
+  margin-bottom: 0; 
+  margin-left: auto;
+  margin-right: auto;
+  padding:10px;
+}
+
+h1:hover {
+  background-color: #12012e;
+  color: #977c84;
+}
         
         </style>
         </head>
         <body>
-            <h1>Friends List</h1>
-            <ul>
+            <h1 style="text-align: center;">Friends List</h1>
+            <form method="POST">
+                <button style="left:10%; top:10%;" style="display:block; text-align: center; margin-top:15%;" formaction="/landingPage">Back</button>
+                </form>
                 {% for friend in friends %}
-                    <li>{{ friend[1]}}</li>
+                <form method="POST">
+                    <button class = "centerButton" formaction="/private_messages_from_friendslist/{{session.name}}/{{friend[1]}}" type="submit" name="user_id" value="{{ friend[1] }}" class="user-button">DM {{ friend[1] }}</button>
+                </form>    
+                
                 {% endfor %}
-            </ul>
-            <form  method="post">
-               
-                <button style="display:block; text-align: center;" formaction="/matches">Back</button></div>
-            </form>
+     
 
         </body>
 

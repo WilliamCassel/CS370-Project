@@ -8,7 +8,7 @@ body{
 }
 
 
-button{
+.centerButton{
     width:150px; 
     height:45px; 
     border-color:#1186bd;
@@ -22,6 +22,19 @@ button{
     top: auto; 
     left: 50%; 
     transform: translateX(-50%);
+    margin-bottom:5%;
+}
+
+button{
+    width:150px; 
+    height:45px; 
+    border-color:#1186bd;
+    border-radius:10%;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
+    background-color:#1186bd; 
+    font-size:20px;
+    font-family: 'Space Mono', monospace; 
+    color:white;
     margin-bottom:5%;
 }
 
@@ -54,11 +67,14 @@ button:hover{
         <body>
             <h1> Matches for {{session.name}}</h1>
             <form method="get">
-                <button style="display:block; text-align: center; margin-top:15%;" formaction="/landingPage">Back</button>
+                <button style="left:10%; top:10%;" style="display:block; text-align: center; margin-top:15%;" formaction="/landingPage">Back</button>
                 </form>
+                <form method="POST">
+                    <button style="left:10%; top:15%;" style="display:block; text-align: center;" formaction="/friends/{{session.name}}">See Friendslist</button>
+                   </form>
             {% for u in users %}
             <form method="POST">
-                <button formaction="/private_messages/{{session.name}}/{{u[0]}}" type="submit" name="user_id" value="{{ u[0] }}" class="user-button">DM {{ u[0] }}</button>
+                <button class ="centerButton" formaction="/private_messages/{{session.name}}/{{u[0]}}" type="submit" name="user_id" value="{{ u[0] }}" class="user-button">DM {{ u[0] }}</button>
             </form>
              {% endfor %}
           

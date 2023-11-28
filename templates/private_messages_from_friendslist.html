@@ -135,12 +135,12 @@ body{
     </div>
 
     <div style="text-align: center; width: 100%;">
-    <form action="/send_message" method="post">
+    <form action="/send_message_from_friendslist" method="post">
         <input type="hidden" name="sender" value="{{ sender }}">
         <input type="hidden" name="receiver" value="{{ receiver }}">
         <input type="text" name="message">
         <input type="submit" value="Send">
-        <button style="display:block; text-align: center;" formaction="/matches">Back</button></div>
+        <button style="display:block; text-align: center;" formaction="/friends/{{session.name}}">Back</button></div>
 
         <button style="display:block; text-align: center;" formaction="/add_friend/{{sender}}/{{receiver}}">Add Friend</button>
        

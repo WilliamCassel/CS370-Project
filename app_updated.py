@@ -107,7 +107,7 @@ def matches():
     db, cur = get_db_instance()
     cur.execute("SELECT username, email FROM users;") 
     users= cur.fetchall()
-    #session['match'] = "" #Placeholder
+    #session['match'] = "" #Placeholder, probably not going to be used since we can just pass the matches through as parameters in render_template
     return render_template('matches.html', users = users)
 
 
@@ -126,8 +126,8 @@ def loggedIn():
     db, cur = get_db_instance()
     username = request.form.get('username')
     password = request.form.get('password')
-    cur.execute("DROP TABLE friendslist")
-    cur.execute("CREATE TABLE friendslist(user TEXT, friend TEXT, PRIMARY KEY (user, friend), FOREIGN KEY(user) REFERENCES users(user), FOREIGN KEY(friend) REFERENCES users(user))")
+    #cur.execute("DROP TABLE friendslist")
+    #cur.execute("CREATE TABLE friendslist(user TEXT, friend TEXT, PRIMARY KEY (user, friend), FOREIGN KEY(user) REFERENCES users(user), FOREIGN KEY(friend) REFERENCES users(user))")
     cur.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password)) #check if username and passwords match
     user_data = cur.fetchone()
     if user_data is not None:
@@ -213,6 +213,31 @@ def private_messages(sender, receiver):
     db.close()
 
     return render_template('private_message.html', sender=sender, receiver=receiver, messages=messages)
+
+
+@app.route('/private_messages_from_friendslist/<sender>/<receiver>', methods=['POST', 'GET']) ##annoying, but idk how else to fix the back button issue
+def private_messages_from_friendslist(sender, receiver):
+    db, cur = get_db_instance()
+
+    cur.execute('SELECT * FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)',(sender, receiver, receiver, sender))
+    messages = cur.fetchall()
+    db.close()
+
+    return render_template('private_messages_from_friendslist.html', sender=sender, receiver=receiver, messages=messages)
+
+
+@app.route('/send_message_from_friendslist', methods=['POST'])
+def send_message_from_friendslist():
+    sender_username = request.form['sender']
+    receiver_username = request.form['receiver']
+    message = request.form['message']
+    db, cur = get_db_instance()
+    
+    cur.execute('INSERT INTO messages (sender_id, receiver_id, message) VALUES (?, ?, ?)',(sender_username, receiver_username, message))
+    db.commit()
+    db.close()
+
+    return redirect(url_for('private_messages_from_friendslist', sender=sender_username, receiver=receiver_username, action='post'))
 
 
 
