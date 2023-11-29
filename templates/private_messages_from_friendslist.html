@@ -1,0 +1,151 @@
+<html>
+    <head>
+<style>
+body{
+    background-image:url("https://static.vecteezy.com/system/resources/previews/006/852/804/non_2x/abstract-blue-background-simple-design-for-your-website-free-vector.jpg");
+    background-size:cover;
+}
+.center {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  
+  .center2 {
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  h1 {
+    width: 60%;
+    font-family: 'Space Mono', monospace;
+    font-size: 45px;
+    color: #977c84;
+    text-align: center;
+    background-color: #12012e;
+    border-radius: clamp(0.25rem, 0.75vw, 1rem);
+    margin-top: 20px; 
+    margin-bottom: 0; 
+    margin-left: auto;
+    margin-right: auto;
+    padding:10px;
+  }
+  h1:hover {
+    background-color: #12012e;
+    color: #977c84;
+  }
+  
+  input {
+            width: 60%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #1186bd;
+            color: #fff;
+            cursor: pointer;
+        }
+        .container {
+            text-align: center;
+        }
+        button:hover{
+            background-color:#053e58
+        }
+        button{
+        width:150px; 
+        height:45px; 
+        border-color:#1186bd;
+        border-radius:10%;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
+        background-color:#1186bd; 
+        font-size:20px;
+        font-family: 'Space Mono', monospace; 
+        color:white;
+        position: relative; 
+        top: auto; 
+        left: 50%; 
+        transform: translateX(-50%);
+        margin-bottom:5%;
+    }
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Message styles */
+.message-container {
+    margin-top: 20px;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 70%;
+}
+
+.sent {
+    background-color: #DCF8C6;
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+.received {
+    background-color: #EAEAEA;
+    align-self: flex-start;
+    margin-right: auto;
+}
+
+.message-content {
+    margin: 0;
+}
+
+.timestamp {
+    font-size: 12px;
+    color: #777;
+    margin-top: 5px;
+}
+  </style>
+    </head>
+<body>
+    <div class="container">
+        <h1>Private Messages Between {{ sender }} and {{ receiver }}</h1>
+        <div class="message-container">
+            {% for m in messages %}
+                <div class="message {% if m[1] == sender %}sent{% else %}received{% endif %}">
+                    <p class="message-content">{{ m[3] }}</p>
+                    <p class="timestamp">{{ m[4] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div style="text-align: center; width: 100%;">
+    <form action="/send_message_from_friendslist" method="post">
+        <input type="hidden" name="sender" value="{{ sender }}">
+        <input type="hidden" name="receiver" value="{{ receiver }}">
+        <input type="text" name="message">
+        <input type="submit" value="Send">
+        <button style="display:block; text-align: center;" formaction="/friends/{{session.name}}">Back</button></div>
+
+        <button style="display:block; text-align: center;" formaction="/add_friend/{{sender}}/{{receiver}}">Add Friend</button>
+       
+    </form>
+    
+</body>
+
+  </html>

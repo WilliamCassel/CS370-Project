@@ -24,7 +24,6 @@ body{
     transform: translateX(-50%);
     margin-bottom:5%;
 }
-
 button{
     width:150px; 
     height:45px; 
@@ -37,8 +36,10 @@ button{
     color:white;
     margin-bottom:5%;
 }
-
-h1 {
+button:hover{
+            background-color:#053e58
+        }
+        h1 {
   width: 60%;
   font-family: 'Space Mono', monospace;
   font-size: 45px;
@@ -57,33 +58,25 @@ h1:hover {
   background-color: #12012e;
   color: #977c84;
 }
-button:hover{
-            background-color:#053e58
-        }
-
-
+        
         </style>
         </head>
         <body>
-            <h1> Matches for {{session.name}}</h1>
-            <form method="get">
+            <h1 style="text-align: center;">Friends List</h1>
+            <form method="POST">
                 <button style="left:10%; top:10%;" style="display:block; text-align: center; margin-top:15%;" formaction="/landingPage">Back</button>
                 </form>
+                {% for friend in friends %}
                 <form method="POST">
-                    <button style="left:10%; top:15%;" style="display:block; text-align: center;" formaction="/friends/{{session.name}}">See Friendslist</button>
-                   </form>
-            {% for u in users %}
-            <form method="POST">
-                <button class ="centerButton" formaction="/private_messages/{{session.name}}/{{u[0]}}" type="submit" name="user_id" value="{{ u[0] }}" class="user-button">DM {{ u[0] }}</button>
-            </form>
-             {% endfor %}
-          
-    </body>
+                    <button class = "centerButton" formaction="/private_messages_from_friendslist/{{session.name}}/{{friend[1]}}" type="submit" name="user_id" value="{{ friend[1] }}" class="user-button">DM {{ friend[1] }}</button>
+                </form>    
+                
+                {% endfor %}
+     
 
-    <script>
+        </body>
 
-
-    </script>
+    
 
 
 
