@@ -162,7 +162,7 @@ def add_friend(user, friend):
 @app.route('/friends/<user>', methods=['POST'])
 def display_friends(user):
     db, cur = get_db_instance()
-    cur.execute('SELECT * FROM friendslist WHERE user = ?', (user))
+    cur.execute('SELECT * FROM friendslist WHERE user = ?', (user,))
     friends = cur.fetchall()
     db.close()
 
