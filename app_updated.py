@@ -142,6 +142,7 @@ def logout():
     session['name'] = None
     return render_template('index_updated.html')
 
+'''
 def update_db():
     with open("hb_data.pickle", "rb") as file:
          
@@ -154,7 +155,7 @@ def update_db():
         cur.execute(command, value)
         db.commit()
         db.close()
-
+'''
 
 @app.route("/secure_api/<proc_name>",methods=['GET', 'POST'])
 #@token_required
