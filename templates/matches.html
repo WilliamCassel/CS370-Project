@@ -3,7 +3,7 @@
         <style>
             
 body{
-    background-image:url("https://static.vecteezy.com/system/resources/previews/006/852/804/non_2x/abstract-blue-background-simple-design-for-your-website-free-vector.jpg");
+    background-image:url("https://wallpaperaccess.com/full/1311465.jpg");
     background-size:cover;
 }
 
@@ -13,7 +13,7 @@ body{
     height:45px; 
     border-color:#1186bd;
     border-radius:10%;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
+    
     background-color:#1186bd; 
     font-size:20px;
     font-family: 'Space Mono', monospace; 
@@ -24,27 +24,42 @@ body{
     transform: translateX(-50%);
     margin-bottom:5%;
 }
-
 button{
-    width:150px; 
-    height:45px; 
-    border-color:#1186bd;
-    border-radius:10%;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
-    background-color:#1186bd; 
-    font-size:20px;
-    font-family: 'Space Mono', monospace; 
-    color:white;
-    margin-bottom:5%;
+    background-image: linear-gradient(#0dccea, #0d70ea);
+  border: 0;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, .3) 0 5px 15px;
+  box-sizing: border-box;
+  color: #fff;
+
+  font-family: 'Space Mono', monospace;
+  font-size:large;
+  margin: 5px;
+  padding: 10px 15px;
+  text-align: center;
+transition: transform 0.3s ease;
+}
+
+
+.seeFriendsButton {
+    width: 150px;
+    height: 45px;
+    border-color: #1186bd;
+    border-radius: 10%;
+    background-color: #1186bd;
+    font-size: 15px; 
+    font-family: 'Space Mono', monospace;
+    color: white;
+    margin-bottom: 2%;
 }
 
 h1 {
   width: 60%;
   font-family: 'Space Mono', monospace;
   font-size: 45px;
-  color: #977c84;
+  color: white;
   text-align: center;
-  background-color: #12012e;
+  background-image: linear-gradient(#0dccea, #0d70ea);
   border-radius: clamp(0.25rem, 0.75vw, 1rem);
   margin-top: 20px; 
   margin-bottom: 0; 
@@ -53,24 +68,29 @@ h1 {
   padding:10px;
 }
 
+
 h1:hover {
   background-color: #12012e;
   color: #977c84;
 }
-button:hover{
-            background-color:#053e58
-        }
 
-
+button:hover {
+  background-image: linear-gradient(#0aa9d2, #0a5fca); 
+  transform: translate(-50%,-10px);
+}
+.seeFriendsButton:hover{
+    background-image: linear-gradient(#0aa9d2, #0a5fca); 
+  transform: translateY(-10px);
+}
         </style>
         </head>
         <body>
             <h1> Matches for {{session.name}}</h1>
             <form method="get">
-                <button style="left:10%; top:10%;" style="display:block; text-align: center; margin-top:15%;" formaction="/landingPage">Back</button>
+                <button class="seeFriendsButton"style="left:10%; top:10%;" style="display:block; text-align: center; margin-top:5%; " formaction="/landingPage">Back      </button>
                 </form>
                 <form method="POST">
-                    <button style="left:10%; top:15%;" style="display:block; text-align: center;" formaction="/friends/{{session.name}}">See Friendslist</button>
+                    <button class="seeFriendsButton" style="left:10%; top:5%;" style="display:block; text-align: center;" formaction="/friends/{{session.name}}">Friends</button>
                    </form>
             {% for u in users %}
             <form method="POST">
@@ -88,3 +108,7 @@ button:hover{
 
 
 </html>
+
+
+
+
