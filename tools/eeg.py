@@ -9,9 +9,14 @@ from db_con import get_db_instance, get_db
 import pickle
 from flask import Flask,render_template,request, redirect, url_for, g, session, flash
 import csv
+import sqlite3
 
-csv_file_name = "eeg_data.csv"
+
 hb_data = []
+
+db_connection = sqlite3.connect('db.sqlite')
+
+cursor = db_connection.cursor()
 
 
 def on_sensor_state_changed(sensor, state):
@@ -21,19 +26,18 @@ def on_brainbit_signal_received(sensor, data):
     global hb_data
     logger.debug(data)
     logger.debug('\n')
-    hb_data.append(data)
-
-    #Send the incoming data to a csv file
-    '''
+    #hb_data.append(data)
     
-    with open(csv_file_name, 'w') as csv_file:
-        fieldnames = ['DATA']
-        csvwriter = csv.Writer(csv_file)
+    sensor_value = [(item.O1, item.O2, item.T3, item.T4) for item in data]
 
-        csvwriter.writerow(fieldnames)
-        csvwriter.writerows(data)
-  '''
+    hb_data.extend(sensor_value)
 
+    hb_data_pickle = pickle.dumps(hb_data)
+
+    username = "t2"
+    cursor.execute("UPDATE users SET hb_data = ? WHERE username = ?", (hb_data_pickle, username))
+    db_connection.commit()
+    db_connection.close()
 
 
 logger.debug("Create Headband scanner")
@@ -65,3 +69,8 @@ g_scanner.start()
 def get_headband_sensor_object():
     #print("Headband asenor has been found")
     return g_sensor
+
+
+
+if __name__ == "__main__":
+    print("Testig receiving data", "\n")
