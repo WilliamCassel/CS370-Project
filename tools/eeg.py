@@ -19,17 +19,20 @@ def on_sensor_state_changed(sensor, state):
 
 def on_brainbit_signal_received(sensor, data):
     global hb_data
-    logger.debug(data, "\n")
+    logger.debug(data)
+    logger.debug('\n')
     hb_data.append(data)
 
     #Send the incoming data to a csv file
+    '''
+    
     with open(csv_file_name, 'w') as csv_file:
         fieldnames = ['DATA']
         csvwriter = csv.Writer(csv_file)
 
         csvwriter.writerow(fieldnames)
         csvwriter.writerows(data)
-  
+  '''
 
 
 

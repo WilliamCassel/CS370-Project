@@ -8,7 +8,7 @@ import bcrypt
 import traceback
 import pickle
 
-#from tools.eeg import get_headband_sensor_object
+from tools.eeg import get_headband_sensor_object
 
 
 from db_con import get_db_instance, get_db
@@ -41,8 +41,8 @@ def init_new_env():
         g.db = get_db()
 
 
-   # if 'hb' not in g:
-       # g.hb = get_headband_sensor_object()
+    if 'hb' not in g:
+        g.hb = get_headband_sensor_object()
 
     #g.secrets = get_secrets()
     #g.sms_client = get_sms_client()
