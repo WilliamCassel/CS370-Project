@@ -5,3 +5,4 @@ pyyaml
 pyneurosdk2
 pandas
 Flask-Session
+scipy
