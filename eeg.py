@@ -1,15 +1,24 @@
+#neuroSDK imports
 from neurosdk.scanner import Scanner
-from neurosdk.sensor import Sensor
+from neurosdk.sensor import Sensor 
 from neurosdk.brainbit_sensor import BrainBitSensor, SensorFamily
-from neurosdk.__cmn_types import *
 from neurosdk.cmn_types import BrainBitSignalData
+from neurosdk.__cmn_types import *
 
+#standard library imports
+import pickle
+import sqlite3
+import csv
+
+#local imports
 from tools.logging import logger
 from db_con import get_db_instance, get_db
-import pickle
+
+#flask imports
 from flask import Flask,render_template,request, redirect, url_for, g, session, flash
-import csv
-import sqlite3
+
+
+
 
 
 hb_data = []
