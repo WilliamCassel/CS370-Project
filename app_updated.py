@@ -1,28 +1,31 @@
+#flask imports
 from flask import Flask,render_template,request, redirect, url_for, g, session, flash
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 from flask_session import Session
-import jwt
-import sys
-import datetime
+
+#standard library imports
 import bcrypt
-import traceback
+import datetime
+import jwt
 import pickle
+import traceback
+import sys
 
-from tools.eeg import get_headband_sensor_object
-
-
+#local imports 
+from tools.logging import logger
 from db_con import get_db_instance, get_db
-
-
-#from tools.token_required import token_required
+from tools.eeg import get_headband_sensor_object
 
 #used if you want to store your secrets in the aws valut
 #from tools.get_aws_secrets import get_secrets
 
-from tools.logging import logger
+#from tools.token_required import token_required
+
+
+
+
 
 ERROR_MSG = "Ooops.. Didn't work!"
-
 
 #Create our app
 app = Flask(__name__)
@@ -177,6 +180,7 @@ def logout():
     return render_template('index_updated.html')
 
 '''
+#updates database with headband data
 def update_db():
     with open("hb_data.pickle", "rb") as file:
          
