@@ -94,7 +94,7 @@ button:hover {
                    </form>
             {% for u in users %}
             <form method="POST">
-                <button class ="centerButton" formaction="/private_messages/{{session.name}}/{{u[0]}}" type="submit" name="user_id" value="{{ u[0] }}" class="user-button">DM {{ u[0] }}</button>
+                <button class ="centerButton" formaction="/private_messages/{{session.name}}/{{u[0]}}" type="submit" name="user_id" value="{{ u[0] }}" class="user-button">DM {{ u }}</button>
             </form>
              {% endfor %}
           

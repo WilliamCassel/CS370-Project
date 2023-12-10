@@ -12,6 +12,7 @@ import traceback
 import sys
 
 #local imports 
+from analyzeData import findThreshHoldUsers, unpickleTheData
 from tools.logging import logger
 from db_con import get_db_instance, get_db
 from tools.eeg import get_headband_sensor_object
@@ -111,10 +112,28 @@ def matches():
     #ADD MATCH SESSION TOKENS HERE
     #return redirect('/static/landingPage.html')
     db, cur = get_db_instance()
-    cur.execute("SELECT username, email FROM users;") 
-    users= cur.fetchall()
+    cur.execute("SELECT username, hb_data FROM users;")
+    data = cur.fetchall()
+    deserialziedUserData =[]
+    for username, hbdata in data:
+    #unpicling the data by calling functoin at each iteration 
+        deserializedRow= unpickleTheData(hbdata)
+        deserialziedUserData.append((username, deserializedRow))#adding it to the datalist along with its user label
+       
+    
+    users = findThreshHoldUsers(deserialziedUserData, 0.2)
+    matches = []
+    for m1, m2, temp in users:
+        if m1 == session['name']:
+            matches.append(m2)
+            print(m2)
+
+    #unique = set(users)
+    print(users)
+    #cur.execute("SELECT username, email FROM users;") 
+    #users= cur.fetchall()
     #session['match'] = "" #Placeholder, probably not going to be used since we can just pass the matches through as parameters in render_template
-    return render_template('matches.html', users = users)
+    return render_template('matches.html', users = matches)
 
 #makes sure only logged in users can access watchVids page
 @app.route('/watchVids', methods=['POST'])
