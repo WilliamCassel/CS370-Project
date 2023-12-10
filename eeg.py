@@ -27,10 +27,11 @@ db_connection = sqlite3.connect('db.sqlite')
 
 cursor = db_connection.cursor()
 
-
+#to monitor state of the sensor
 def on_sensor_state_changed(sensor, state):
     logger.debug("Sensor {0} is {1}".format(sensor.Name, state))
 
+#handles incoming data from headband
 def on_brainbit_signal_received(sensor, data):
     global hb_data
     logger.debug(data)
@@ -42,7 +43,7 @@ def on_brainbit_signal_received(sensor, data):
     hb_data.extend(sensor_value)
 
     hb_data_pickle = pickle.dumps(hb_data)
-
+    #associates data with t2
     username = "t2"
     cursor.execute("UPDATE users SET hb_data = ? WHERE username = ?", (hb_data_pickle, username))
     db_connection.commit()
@@ -54,6 +55,9 @@ logger.debug("Create Headband scanner")
 g_scanner = Scanner([SensorFamily.SensorLEBrainBit])
 g_sensor = None
 logger.debug("Sensor found call back")
+
+
+#handles headband sensor discovery 
 def sensorFound(scanner, sensors):
     global g_scanner
     global g_sensor
@@ -74,7 +78,7 @@ logger.debug("Starting scan")
 # Start Search
 g_scanner.start()
 
-
+#retrieves g_sensor object
 def get_headband_sensor_object():
     #print("Headband asenor has been found")
     return g_sensor
