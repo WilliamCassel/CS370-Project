@@ -121,13 +121,15 @@ def matches():
         deserialziedUserData.append((username, deserializedRow))#adding it to the datalist along with its user label
        
     
-    users = findThreshHoldUsers(deserialziedUserData, 0.2)
+    users = findThreshHoldUsers(deserialziedUserData, 0.17)
     matches = []
     for m1, m2, temp in users:
         if m1 == session['name']:
             matches.append(m2)
-            print(m2)
+        if m2 == session['name']:
+            matches.append(m1)
 
+    matches = set(matches)
     #unique = set(users)
     print(users)
     #cur.execute("SELECT username, email FROM users;") 
