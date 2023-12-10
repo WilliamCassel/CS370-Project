@@ -60,7 +60,9 @@ def index():
 
 @app.route('/signedUp', methods=['POST'])
 def signedUp():
-        db, cur = get_db_instance()
+        #establish connection
+        db, cur = get_db_instance() 
+        #get user info
         username = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
@@ -69,27 +71,28 @@ def signedUp():
         #command = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
         cur.execute("SELECT * FROM users WHERE username = ?", (username,))
         email_check = cur.fetchone()
-        if email_check is None:
+        if email_check is None:#if username doesn't exist, insert into db
             command = "INSERT INTO users (username, email, password, hb_data) VALUES (?, ?, ?, ?)"
             values = (username, email, password, hb_data)
             cur.execute(command, values)
             db.commit()
             db.close()
+            #displaying sucess message
             flash("Registration successful")
             session['logged_in'] = True  # Store a session variable to indicate the user is logged in
             session['name'] = username
             return render_template('landingPage.html')
-        flash("Account already exists!")
+        flash("Account already exists!")#if username already exists
         return redirect("/signUp")
   
-
+#to activate sign up page
 @app.route('/signUp', methods=['POST', 'GET'])
 def signup():
         return render_template('signUp.html')
 
 
 
-
+#only logged in users can access landing page
 @app.route('/landingPage', methods=['POST', 'GET'])
 def landing_page():
     if session['logged_in'] == False:
@@ -99,7 +102,7 @@ def landing_page():
     #return redirect('/static/landingPage.html')
     return render_template('landingPage.html')
 
-
+#makes sure only logged in users can access matches page
 @app.route('/matches', methods=['POST', 'GET'])
 def matches():
     if session['logged_in'] == False:
@@ -113,7 +116,7 @@ def matches():
     #session['match'] = "" #Placeholder, probably not going to be used since we can just pass the matches through as parameters in render_template
     return render_template('matches.html', users = users)
 
-
+#makes sure only logged in users can access watchVids page
 @app.route('/watchVids', methods=['POST'])
 def watchVids():
     if session['logged_in'] == False:
@@ -123,7 +126,7 @@ def watchVids():
     return render_template('watchVids.html')
     #return redirect('/static/landingPage.html')
 
-
+#handles user login
 @app.route('/loggedIn', methods=['POST'])
 def loggedIn():
     db, cur = get_db_instance()
@@ -141,13 +144,13 @@ def loggedIn():
     flash("Invalid login credentials")
     return render_template('/login.html')
 
-
+#shows login page to users 
 @app.route('/login', methods = ['POST'])
 def login():
     return render_template('login.html')
 
 
-
+#allows users to add friends and dislays prive messages
 @app.route('/add_friend/<user>/<friend>', methods=['POST'])
 def add_friend(user, friend):
     db, cur = get_db_instance()
@@ -161,7 +164,7 @@ def add_friend(user, friend):
     db.close()
     return render_template('private_message.html', sender=user, receiver=friend, messages=messages) 
 
-
+#allows users to view their friends list
 @app.route('/friends/<user>', methods=['POST'])
 def display_friends(user):
     db, cur = get_db_instance()
@@ -172,7 +175,7 @@ def display_friends(user):
     return render_template('friends_list.html', friends=friends)
 
 
-
+#handles when users log out
 @app.route('/logout', methods=['POST'])
 def logout():
     session['logged_in'] = False
@@ -194,7 +197,7 @@ def update_db():
         db.commit()
         db.close()
 '''
-
+#handles sending messages between users
 @app.route('/send_message', methods=['POST'])
 def send_message():
     sender_username = request.form['sender']
@@ -208,7 +211,7 @@ def send_message():
 
     return redirect(url_for('private_messages', sender=sender_username, receiver=receiver_username, action='post'))
 
-
+#to view private messages
 @app.route('/private_messages/<sender>/<receiver>', methods=['POST', 'GET'])
 def private_messages(sender, receiver):
     db, cur = get_db_instance()
@@ -219,7 +222,7 @@ def private_messages(sender, receiver):
 
     return render_template('private_message.html', sender=sender, receiver=receiver, messages=messages)
 
-
+#view private messages of a specific friend 
 @app.route('/private_messages_from_friendslist/<sender>/<receiver>', methods=['POST', 'GET']) ##annoying, but idk how else to fix the back button issue
 def private_messages_from_friendslist(sender, receiver):
     db, cur = get_db_instance()
@@ -230,7 +233,7 @@ def private_messages_from_friendslist(sender, receiver):
 
     return render_template('private_messages_from_friendslist.html', sender=sender, receiver=receiver, messages=messages)
 
-
+#allows users to send private messages to their friends
 @app.route('/send_message_from_friendslist', methods=['POST'])
 def send_message_from_friendslist():
     sender_username = request.form['sender']
@@ -245,7 +248,7 @@ def send_message_from_friendslist():
     return redirect(url_for('private_messages_from_friendslist', sender=sender_username, receiver=receiver_username, action='post'))
 
 
-
+#utility function to handle api processes 
 @app.route("/secure_api/<proc_name>",methods=['GET', 'POST'])
 #@token_required
 def exec_secure_proc(proc_name):
@@ -268,7 +271,7 @@ def exec_secure_proc(proc_name):
 
     return resp
 
-
+#api function for HTTP requests
 @app.route("/open_api/<proc_name>",methods=['GET', 'POST'])
 def exec_proc(proc_name):
     logger.debug(f"Call to {proc_name}")
