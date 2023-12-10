@@ -1,4 +1,6 @@
 import pickle, numpy, sqlite3
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def calcEDist(aData,bData):
     #convert to arrays
@@ -69,8 +71,55 @@ threshold=.2  #setting threshold
 thresHoldPairs = findThreshHoldUsers(deserialziedUserData, threshold)
 #
 #printing out results
-print("\nUsers Distances\n")
+print("\nUsers Distances within threshold of " + str(threshold) + "\n")
 for i in thresHoldPairs:
     print("Users "+str(i[0]) + " and " +str(i[1]) +" distance: "+ "{:.3f}".format(i[2]))
 
 print("\n")
+
+
+#creates a matrix of distnaces between pairs of data
+def createMatrix(userPairs, numUsers):
+    myMatrix = numpy.zeros((numUsers, numUsers))#create empyt matrix of zeros
+    for pair in userPairs:#iterate over list of threshold pairs
+
+        #create consecutive pairs frrom list
+        dataA = pair[0]-1  
+        dataB = pair[1]-1  
+
+        #distances between data a and data b
+        userPairDistance =round(pair[2], 3) 
+
+        #assing value to specific cell in matrix 
+        myMatrix[dataA][dataB] = userPairDistance
+        myMatrix[dataB][dataA] = userPairDistance  
+    #return completed matrix
+    return myMatrix
+
+# Create the distance matrix
+distGridFinal= createMatrix(thresHoldPairs, len(deserialziedUserData))
+
+
+
+#creating the window
+plt.figure(figsize=(7, 5))
+
+#creating the heatmap based on cacluated matrix
+#specifying viridis color, with annotated cells, and rounded to 3 decimals places in each cell
+plot = sns.heatmap(distGridFinal, cmap='viridis', annot=True, fmt='.3f')
+
+
+
+numUsers=[]#creating list to populate labels
+for i in range(1, len(deserialziedUserData)+1):
+    numUsers.append(str(i))
+
+#setting lables
+
+
+plot.set_xticklabels(numUsers)
+plot.set_yticklabels(numUsers)
+plot.set_ylabel('Users')
+plot.set_xlabel('users')
+plt.title('User distances')
+plt.show()
